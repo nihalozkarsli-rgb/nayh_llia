@@ -27,9 +27,12 @@ from gtts import gTTS
 # ------------------------------------------------------------------
 # 1) SAYFA AYARLARI
 # ------------------------------------------------------------------
+# --- 1) SAYFA AYARLARI ---
+logo_path = "logo.jpg"
+
 st.set_page_config(
     page_title="nayh_llia",
-    page_icon="🌙",
+    page_icon=logo_path,
     layout="centered",
 )
 
