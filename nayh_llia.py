@@ -86,11 +86,17 @@ API_KEY = API_KEY.strip()
 
 # Geçici kontrol: anahtarın doğru yapıştırıldığını doğrulamak için
 # (uzunluk ve ilk/son karakterleri gösterir, tam anahtarı göstermez)
-if API_KEY == "BURAYA_KENDI_GROQ_API_ANAHTARINI_YAPISTIR":
-    st.error("API_KEY satırı hâlâ placeholder — anahtarını yapıştırmayı unutmuşsun.")
+# ------------------------------------------------------------------
+# 4) API ANAHTARI
+# ------------------------------------------------------------------
+try:
+    API_KEY = st.secrets["API_KEY"].strip()
+except Exception:
+    API_KEY = "BURAYA_KENDI_GROQ_API_ANAHTARINI_YAPISTIR"
+
+if API_KEY == "BURAYA_KENDI_GROQ_API_ANAHTARINI_YAPISTIR" or not API_KEY:
+    st.error("API Anahtarı bulunamadı! Lütfen geçerli bir API anahtarı girin.")
     st.stop()
-else:
-    st.caption(f"🔑 Anahtar yüklendi: {API_KEY[:6]}...{API_KEY[-4:]} ({len(API_KEY)} karakter)")
 
 if "client" not in st.session_state:
     try:
