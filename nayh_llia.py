@@ -181,7 +181,10 @@ if ses_kaydi is not None:
 # 9) YENİ MESAJ AL VE CEVAPLA (yazarak ya da sesle)
 # ------------------------------------------------------------------
 yazili_girdi = st.chat_input("nayh_llia'ya bir şey sor...")
+
+# Girdinin mikrofondan mı yoksa klavyeden mi geldiğini kontrol ediyoruz
 kullanici_girdisi = yazili_girdi or sesten_gelen_metin
+sesle_mi_soruldu = bool(sesten_gelen_metin)
 
 if kullanici_girdisi:
     st.session_state.mesajlar.append({"role": "user", "content": kullanici_girdisi})
@@ -197,13 +200,14 @@ if kullanici_girdisi:
             cevap_metni = cevap.choices[0].message.content
             st.markdown(cevap_metni)
 
-            # Cevabı sesli okut (gTTS ile)
-            try:
-                ses = gTTS(text=cevap_metni, lang="tr")
-                ses.save("gecici_cevap.mp3")
-                st.audio("gecici_cevap.mp3", format="audio/mp3", autoplay=True)
-            except Exception as e:
-                st.caption(f"(Ses oluşturulamadı: {e})")
+            # SADECE mikrofona basıp konuştuysan sesli cevap üret ve çal
+            if sesle_mi_soruldu:
+                try:
+                    ses = gTTS(text=cevap_metni, lang="tr")
+                    ses.save("gecici_cevap.mp3")
+                    st.audio("gecici_cevap.mp3", format="audio/mp3", autoplay=True)
+                except Exception as e:
+                    st.caption(f"(Ses oluşturulamadı: {e})")
 
         except Exception as e:
             cevap_metni = f"⚠️ Bir hata oluştu: {e}"
